@@ -1,13 +1,12 @@
-import React, { useContext,useEffect,useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Login from "./components/Auth/Login"
 import EmployeeDashboard from './components/Dashboard/EmployeeDashboard'
 import AdminDashboard from './components/Dashboard/AdminDashboard'
-import { setLocalStorage } from './utils/LocalStorage'
 import { AuthContext } from './context/AuthProvider'
 
 function App() {
 const [user, setUser] = useState(null); // State to track user type
-
+const [LoggedInUserData, setLoggedInUserData] = useState(null)
 const authData = useContext(AuthContext) // Get the auth data from context
 
 // Check if user is logged in after authentication or authData changes
@@ -29,9 +28,14 @@ const handleLogin = (email, password) => {
     setUser("admin"); 
     localStorage.setItem("loggedInUser", JSON.stringify({ role: "admin" })); // Store logged-in user in localStorage
 
-  } else if (authData && authData.employees.find(emp => emp.email === email && emp.password === password)) {
-    setUser("user");
-    localStorage.setItem("loggedInUser", JSON.stringify({ role: "user" })); // Store logged-in user in localStorage 
+  } else if (authData) {
+    const employee = authData.employees.find(emp => emp.email === email && emp.password == password)
+    if (employee) {
+      setUser("employee");
+      setLoggedInUserData(employee);
+      localStorage.setItem("loggedInUser", JSON.stringify({ role: "employee" })); // Fixed incorrect role value
+    }
+    
 
   } else {
     alert("Invalid credentials");
@@ -44,7 +48,7 @@ const handleLogin = (email, password) => {
      
      {!user && <Login handleLogin={handleLogin} />}
       {user === 'admin' && <AdminDashboard />}
-      {user === 'user' && <EmployeeDashboard />}
+      {user === 'employee' && <EmployeeDashboard data={LoggedInUserData} />}
     </>
   );
 }

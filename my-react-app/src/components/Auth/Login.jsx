@@ -7,7 +7,7 @@ const Login = ({handleLogin}) => {
     const [password, setPassword] = useState('');
     const submitHandler = (e) => {
         e.preventDefault();
-        handleLogin(email, password); //By doing this we are sending the data to parent from child component highly interesting
+        handleLogin(email, password); //By doing this we are sending the data to parent from child component highly interesting (technically we are sending sending the function to child component and then calling it from child component providing the data as arguments)
         setEmail('');
         setPassword('');
     };
@@ -28,7 +28,7 @@ const Login = ({handleLogin}) => {
                     <label htmlFor="email" className="block text-gray-300 font-semibold mb-2">Email</label>
                     <input
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)} 
                         required
                         id="email"
                         type="email"
