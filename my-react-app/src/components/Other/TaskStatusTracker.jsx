@@ -1,7 +1,7 @@
 import React from 'react'
 
 const TaskStatusTracker = ({data})=> {
-  const colors = ['bg-purple-400', 'bg-blue-500', 'bg-green-600','bg-red-400'];
+  const colors = ['bg-gradient-to-r from-purple-400 to-purple-600', 'bg-gradient-to-r from-blue-500 to-blue-700', 'bg-gradient-to-r from-green-600 to-green-800', 'bg-gradient-to-r from-red-400 to-red-600'];
   
   return (
     <div className='flex justify-between gap-5 w-screen'>
