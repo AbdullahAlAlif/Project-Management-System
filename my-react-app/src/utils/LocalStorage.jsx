@@ -16,7 +16,10 @@ const employee = [
         taskNumber: 1,
         status: { active: true, newTask: true, completed: false, failed: false },
         taskTitle: "Update Client Database",
-        taskCategory: "Admin"
+        taskCategory: "Admin",
+        taskDescription: "Add new client information to the database.",
+        taskDate: "2025-04-25",
+        taskCategory: "Administration"   
       },
       {
         taskNumber: 2,
@@ -220,7 +223,7 @@ const employee = [
       }
     ]
   }
-];
+]; 
 const admin = {
   email: "admin@example.com",
   password: "admin123"

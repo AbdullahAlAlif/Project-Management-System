@@ -22,7 +22,7 @@ const handleLogin = (email, password) => {
     const employee = authData.employees.find(emp => emp.email === email && emp.password == password)
     if (employee) {
       setUser("employee");
-      //setLoggedInUserData(employee);
+      //setLoggedInUserData(employee); 
       localStorage.setItem("loggedInUser", JSON.stringify({ role: "employee" , data : employee})); // Fixed incorrect role value
     }
     
@@ -43,16 +43,19 @@ useEffect(() => {
       setLoggedInUserData(parsedUser.data || null); //  Set the user data from localStorage
     } else {
       setUser(null); // No user logged in
+      setLoggedInUserData(null); // Clear LoggedInUserData when no user is logged in
     }
   }
-}, [authData]); 
+}, [authData, user]); // Run this effect when authData or user changes
 
   return (
     <>
      
      {!user && <Login handleLogin={handleLogin} />}
-      {user === 'admin' && <AdminDashboard />}
-      {user === 'employee' && <EmployeeDashboard data={LoggedInUserData} />}
+    {user === 'employee' && LoggedInUserData ? ( // Only render EmployeeDashboard when LoggedInUserData is not null.
+      <EmployeeDashboard data={LoggedInUserData} />
+    ) : null}
+    {user === 'admin' && <AdminDashboard />}
     </>
   );
 }
