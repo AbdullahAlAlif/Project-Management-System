@@ -1,26 +1,16 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Login from "./components/Auth/Login"
 import EmployeeDashboard from './components/Dashboard/EmployeeDashboard'
 import AdminDashboard from './components/Dashboard/AdminDashboard'
 import { AuthContext } from './context/AuthProvider'
 
+
 function App() {
 const [user, setUser] = useState(null); // State to track user type
-const [LoggedInUserData, setLoggedInUserData] = useState(null)
 const authData = useContext(AuthContext) // Get the auth data from context
+const [LoggedInUserData, setLoggedInUserData] = useState(null)
 
-// Check if user is logged in after authentication or authData changes
-// useEffect(() => {
-//   if (authData) {
-//     const loggedInUser = localStorage.getItem("loggedInUser");
-//     if (loggedInUser) {
-//       setUser(loggedInUser.role); // Set the user state based on local storage
-//     } else {
-//       setUser(null); // No user logged in
-//     }
-//   }
-// }, [authData]); 
-  
+
 
 const handleLogin = (email, password) => {
   
@@ -32,8 +22,8 @@ const handleLogin = (email, password) => {
     const employee = authData.employees.find(emp => emp.email === email && emp.password == password)
     if (employee) {
       setUser("employee");
-      setLoggedInUserData(employee);
-      localStorage.setItem("loggedInUser", JSON.stringify({ role: "employee" })); // Fixed incorrect role value
+      //setLoggedInUserData(employee);
+      localStorage.setItem("loggedInUser", JSON.stringify({ role: "employee" , data : employee})); // Fixed incorrect role value
     }
     
 
@@ -42,6 +32,20 @@ const handleLogin = (email, password) => {
   }
 };
 
+
+//Check if user is logged in after authentication or authData changes
+useEffect(() => {
+  if (authData) {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (loggedInUser) {
+      const parsedUser = JSON.parse(loggedInUser); // Parse the stored user object
+      setUser(parsedUser.role); // Set the user state based on local storage
+      setLoggedInUserData(parsedUser.data || null); //  Set the user data from localStorage
+    } else {
+      setUser(null); // No user logged in
+    }
+  }
+}, [authData]); 
 
   return (
     <>
