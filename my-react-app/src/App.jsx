@@ -3,13 +3,14 @@ import Login from "./components/Auth/Login"
 import EmployeeDashboard from './components/Dashboard/EmployeeDashboard'
 import AdminDashboard from './components/Dashboard/AdminDashboard'
 import { AuthContext } from './context/AuthProvider'
+import { createContext } from "react";
+
 
 
 function App() {
 const [user, setUser] = useState(null); // State to track user type
 const authData = useContext(AuthContext) // Get the auth data from context
 const [LoggedInUserData, setLoggedInUserData] = useState(null)
-
 
 
 const handleLogin = (email, password) => {
@@ -48,14 +49,15 @@ useEffect(() => {
   }
 }, [authData, user]); // Run this effect when authData or user changes
 
+
   return (
     <>
      
      {!user && <Login handleLogin={handleLogin} />}
     {user === 'employee' && LoggedInUserData ? ( // Only render EmployeeDashboard when LoggedInUserData is not null.
-      <EmployeeDashboard data={LoggedInUserData} />
+      <EmployeeDashboard changeUser ={setUser} data={LoggedInUserData} />
     ) : null}
-    {user === 'admin' && <AdminDashboard />}
+    {user === 'admin' && <AdminDashboard changeUser ={setUser}  />}
     </>
   );
 }
