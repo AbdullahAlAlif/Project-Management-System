@@ -19,7 +19,7 @@ const TaskList = ({ data }) => {
         <div className='flex flex-wrap gap-5'>
           {data.tasks
             .filter(task => task.status.newTask)
-            .map(task => <NewTask key={task.taskNumber} data={task} />)}
+            .map(task => <NewTask key={task.taskNumber} data={task}  />)}
         </div>
       </div>
       
