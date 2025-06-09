@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../../components/Layouts/Header'
 import TaskStatusTracker from '../../components/AdminComponents/TaskStatusTracker'
 import TaskList from '../../components/EmployeeComponents/TaskList'
-import { Footer } from '../../components/Layouts/Footer'
+import Footer from '../../components/Layouts/Footer'
 
 function EmployeeDashboard({data, changeUser}) {
   return (

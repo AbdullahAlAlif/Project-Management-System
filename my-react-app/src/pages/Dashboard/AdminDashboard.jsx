@@ -3,7 +3,7 @@ import Header from '../../components/Layouts/Header'
 import CreateTask from '../../components/AdminComponents/CreateTask';
 import EmployeeTaskPanel from '../../components/AdminComponents/EmployeeTaskPanel';
 import EmployeeList from '../../components/AdminComponents/EmployeeList';
-import Footer from '../../components/Layouts/Footer';
+import Footer from '../../components/Layouts/Footer'
 
 const AdminDashboard = ({changeUser}) => {
   return (
