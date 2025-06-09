@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useState } from 'react'
 
 const Login = ({handleLogin}) => {
@@ -26,9 +27,10 @@ const Login = ({handleLogin}) => {
             <p className="text-center mb-5 text-gray-400">Welcome back! Please login to your account.</p>
             <p className="text-center mb-8 text-gray-400">
                 Don't have an account?{' '}
-                <a href="/register" className="text-teal-400 hover:text-teal-300 hover:underline transition-all duration-300">
-                    Register
-                </a>
+                <Link to="/register" className="text-teal-400 hover:text-teal-300 hover:underline transition-all duration-300">
+                Register
+                </Link>
+
             </p>
             <form className="flex flex-col gap-6" onSubmit={(e) => submitHandler(e)}>
                 <div>
