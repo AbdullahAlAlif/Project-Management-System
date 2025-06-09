@@ -3,13 +3,20 @@ import { useState } from 'react'
 
 const Login = ({handleLogin}) => {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [formData, setFormData] = useState({ email: '', password: '' });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
     const submitHandler = (e) => {
         e.preventDefault();
-        handleLogin(email, password); //By doing this we are sending the data to parent from child component highly interesting (technically we are sending sending the function to child component and then calling it from child component providing the data as arguments)
-        setEmail('');
-        setPassword('');
+        handleLogin(formData.email, formData.password); //By doing this we are sending the data to parent from child component highly interesting (technically we are sending sending the function to child component and then calling it from child component providing the data as arguments)
+        setFormData({ email: '', password: '' });
     };
 
     return (
@@ -27,10 +34,11 @@ const Login = ({handleLogin}) => {
                 <div>
                     <label htmlFor="email" className="block text-gray-300 font-semibold mb-2">Email</label>
                     <input
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)} 
+                        value={formData.email}
+                        onChange={handleChange} 
                         required
                         id="email"
+                        name="email"
                         type="email"
                         placeholder="Enter your email"
                         className="w-full border border-gray-700 rounded-md py-3 px-4 bg-gray-700 text-gray-200 focus:ring-2 focus:ring-teal-400 focus:outline-none transition-all duration-300"
@@ -39,10 +47,11 @@ const Login = ({handleLogin}) => {
                 <div>
                     <label htmlFor="password" className="block text-gray-300 font-semibold mb-2">Password</label>
                     <input
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={formData.password}
+                        onChange={handleChange}
                         required
                         id="password"
+                        name="password"
                         type="password"
                         placeholder="Enter your password"
                         className="w-full border border-gray-700 rounded-md py-3 px-4 bg-gray-700 text-gray-200 focus:ring-2 focus:ring-teal-400 focus:outline-none transition-all duration-300"

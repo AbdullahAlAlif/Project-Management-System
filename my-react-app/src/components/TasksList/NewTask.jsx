@@ -1,7 +1,32 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../../context/AuthProvider';
 
 const NewTask = ({data}) => {
-    
+    const { refreshUserData } = useContext(AuthContext);
+
+    const handleAcceptTask = () => {
+        const employees = JSON.parse(localStorage.getItem('employee'));
+        const updatedEmployees = employees.map(emp => {
+            if (emp.tasks.some(task => task.taskNumber === data.taskNumber)) {
+                // Ensure counts don't go below 0
+                emp.taskCount.newTask = Math.max(0, emp.taskCount.newTask - 1);
+                emp.taskCount.active++;
+                emp.tasks = emp.tasks.map(task => {
+                    if (task.taskNumber === data.taskNumber) {
+                        return {
+                            ...task,
+                            status: { active: true, newTask: false, completed: false, failed: false }
+                        };
+                    }
+                    return task;
+                });
+            }
+            return emp;
+        });
+        
+        localStorage.setItem('employee', JSON.stringify(updatedEmployees));
+        refreshUserData();
+    };
 
     return (
         <div className="h-full w-[300px] bg-gray-800 rounded-xl flex-shrink-0 p-5 shadow-lg">
@@ -15,7 +40,9 @@ const NewTask = ({data}) => {
             </p>
 
             <div className="flex justify-between mt-4">
-                <button className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-2 text-sm rounded">
+                <button 
+                    onClick={handleAcceptTask}
+                    className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-2 text-sm rounded">
                     Accept Task
                 </button>
             </div>

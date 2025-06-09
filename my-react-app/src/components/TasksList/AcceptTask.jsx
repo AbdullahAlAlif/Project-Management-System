@@ -1,6 +1,38 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../../context/AuthProvider';
 
 const AcceptTask = ({ data }) => {
+    const { refreshUserData } = useContext(AuthContext);
+
+    const updateTaskStatus = (newStatus) => {
+        const employees = JSON.parse(localStorage.getItem('employee'));
+        const updatedEmployees = employees.map(emp => {
+            if (emp.tasks.some(task => task.taskNumber === data.taskNumber)) {
+                // Ensure counts don't go below 0
+                emp.taskCount.active = Math.max(0, emp.taskCount.active - 1);
+                emp.taskCount[newStatus]++;
+                emp.tasks = emp.tasks.map(task => {
+                    if (task.taskNumber === data.taskNumber) {
+                        return {
+                            ...task,
+                            status: {
+                                active: false,
+                                newTask: false,
+                                completed: newStatus === 'completed',
+                                failed: newStatus === 'failed'
+                            }
+                        };
+                    }
+                    return task;
+                });
+            }
+            return emp;
+        });
+        
+        localStorage.setItem('employee', JSON.stringify(updatedEmployees));
+        refreshUserData();
+    };
+
     return (
         <div className="h-full w-[300px] bg-gray-800 rounded-xl flex-shrink-0 p-5 shadow-lg">
             <div className="flex justify-between items-center p-5">
@@ -13,10 +45,14 @@ const AcceptTask = ({ data }) => {
             </p>
 
             <div className="flex justify-between mt-4">
-                <button className="bg-green-500 hover:bg-green-600 text-white py-1 px-2 text-sm rounded">
-                    Mark as Accepted
+                <button 
+                    onClick={() => updateTaskStatus('completed')}
+                    className="bg-green-500 hover:bg-green-600 text-white py-1 px-2 text-sm rounded">
+                    Mark as Completed
                 </button>
-                <button className="bg-red-600 hover:bg-red-700 text-white py-1 px-2 text-sm rounded">
+                <button 
+                    onClick={() => updateTaskStatus('failed')}
+                    className="bg-red-600 hover:bg-red-700 text-white py-1 px-2 text-sm rounded">
                     Mark as Failed
                 </button>
             </div>

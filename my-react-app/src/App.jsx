@@ -25,6 +25,7 @@ const handleLogin = (email, password) => {
       setUser("employee");
       //setLoggedInUserData(employee); 
       localStorage.setItem("loggedInUser", JSON.stringify({ role: "employee" , data : employee})); // Fixed incorrect role value
+      setLoggedInUserData(employee);
     }
     
 
@@ -32,6 +33,26 @@ const handleLogin = (email, password) => {
     alert("Invalid credentials");
   }
 };
+
+
+// Update LoggedInUserData when authData changes => for tracking employee dashboard changes 
+useEffect(() => {
+  if (authData && user === 'employee') {
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (loggedInUser && loggedInUser.data) {
+      // Find the updated employee data from authData
+      const updatedEmployee = authData.employees.find(emp => emp.id === loggedInUser.data.id);
+      if (updatedEmployee) {
+        setLoggedInUserData(updatedEmployee);
+        // Update the localStorage with new data
+        localStorage.setItem("loggedInUser", JSON.stringify({ 
+          role: "employee", 
+          data: updatedEmployee 
+        }));
+      }
+    }
+  }
+}, [authData]); // This will run whenever authData changes
 
 
 //Check if user is logged in after authentication or authData changes
