@@ -1,4 +1,16 @@
-/* Modern transparent scrollbar styles for EmployeeTaskPanel */
+
+.employee-list-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.employee-list-panel {
+  height: 32rem; 
+  max-height: 32rem;
+  min-height: 20rem;
+}
+
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: rgba(75, 85, 99, 0.7) transparent; /* thumb color, track color */
@@ -21,3 +33,5 @@
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent; /* fully transparent track */
 }
+
+

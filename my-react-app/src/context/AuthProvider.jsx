@@ -6,12 +6,20 @@ export const AuthContext = React.createContext();
 const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
+  const refreshUserData = () => {  //if user makes change we need to refresh every time by fetching data from local storage every time
     const { employees, admin } = getLocalStorage() || {};
     setUserData({ employees, admin });
-  }, []); // Initialize userData when the component mounts : Since we want all the values from localStorage to be used in the entire app, we can set the userData state in the useEffect hook when the component mounts which in main js we see its at the very start abd we use these data to validate user in login and show them in DashBoard.
+  };
 
-  return <AuthContext.Provider value={userData}>{children}</AuthContext.Provider>;
+  useEffect(() => {
+    refreshUserData();
+  }, []); // so that initial context is set when logged in and made no changes
+
+  return (
+    <AuthContext.Provider value={{ ...userData, refreshUserData }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
